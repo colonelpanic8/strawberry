@@ -427,9 +427,11 @@ class GraphQLCoreConverter:
 
             return value
 
+        is_one_of = type_definition.is_input and type_definition.is_one_of
+
         out_type = (
             check_one_of
-            if type_definition.is_input and type_definition.is_one_of
+            if is_one_of
             else None
         )
 
@@ -437,6 +439,7 @@ class GraphQLCoreConverter:
             name=type_name,
             fields=lambda: self.get_graphql_input_fields(type_definition),
             description=type_definition.description,
+            is_one_of=is_one_of,
             extensions={
                 GraphQLCoreConverter.DEFINITION_BACKREF: type_definition,
             },
